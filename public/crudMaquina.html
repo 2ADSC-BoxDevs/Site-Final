@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="sweetalert2.min.js"></script>
+  <link rel="stylesheet" href="sweetalert2.min.css">
+  <title>maquina</title>
+  <!-- Link fonte -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet" />
+  <!-- Link CSS -->
+
+  <link rel="stylesheet" href="css/cadastroMaquina.css" />
+  <!-- Link icones -->
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+  <link rel="shortcut icon" href="assets/logo/logo-footer.png" type="image/x-icon" />
+</head>
+
+<body onload="AllMachines()">
+  <div class="mainlogin">
+    <div class="son_card">
+      <div class="header">
+        <div class="header-title">
+          <a class="link_home" href="dashV3.html"><p>&#x276E;</p></a>
+          <img class="uil-user-circle" src="assets/imgs/icon-maquina.png" alt="" />
+          <h1>MÁQUINAS</h1>
+        </div>
+
+        <div>
+          <button class="btn-add-machine" onclick="ModalMachine('add', 'semId')">+ add</button>
+        </div>
+      </div>
+
+      <div id="modal" class="modal-add-machine"></div>
+
+      <div class="div-list-machines">
+        <table id="tabelaMaquina" class="table-machines">
+          <tr>
+            <td class="td-title">Código de Patrimonio:</td>
+            <td class="td-title">Usuário da Máquina:</td>
+            <td class="td-title">Sistema Operacional:</td>
+            <td class="td-title">Empresa:</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- <div class="footer">
+      <div class="img_footer">
+          <img src="img/Group 97.png">
+      </div>
+
+      <div class="social">
+          <h1>Social</h1>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Linkedin</a></li>
+      </div>
+
+
+      <div class="ajuda">
+          <h1>Ajuda</h1>
+          <li><a href="#">Suporte</a></li>
+          <li><a href="#">Contato</a></li>
+
+      </div>
+
+      <div class="voltar">
+         <a href="#navbar"> <img src="img/carbon_back-to-top.png"></a>
+
+      </div>
+
+  </div> -->
+</body>
+
+</html>
+
+<script>
+
+  function ModalMachine(type, id) {
+
+    if(type == "edit"){
+
+      document.getElementById("modal").style.display = "flex";
+
+        document.getElementById("modal").innerHTML = `
+        <div class="modal-header">
+          <h2>Editar Máquina</h2>
+          <button onclick="CloseModal()" class="btn-close-modal"> 
+            <img src="assets/svg/cancel.svg">
+          </button>
+        </div>
+
+        <div class="block_text">
+          <div class="textfield">
+            <label for="maquina">Sistema Operacional:</label>
+            <input id="So_maquina" type="text" placeholder="Insira um Novo Sistema" />
+            <i class="uil uil-cog"></i>
+          </div>
+
+          <div class="block_text">
+           <div class="textfield">
+            <span style="color: white;">Modificar estatus:</span>
+            <select name="isActive" id="isActive_select">
+             <option value="sim">Ligar</option>
+              <option value="não">Desligar</option>
+            </select>
+          </div>
+
+          <button class="btnlogin" onclick="editMachine(${id})"> Editar </button>
+        </div>
+        `;
+
+
+    } else {
+
+
+      document.getElementById("modal").style.display = "flex";
+
+      document.getElementById("modal").innerHTML = `
+      <div class="modal-header">
+        <h2>Adicionar Máquina</h2>
+        <button onclick="CloseModal()" class="btn-close-modal"> 
+          <img src="assets/svg/cancel.svg">
+        </button>
+      </div>
+      <div class="block_text">
+        <div class="textfield">
+          <label for="maquina"> Patrimonio da máquina:</label>
+          <input id="patrimonio_maquina" type="text" placeholder="Insira o Patrimonio" />
+          <i class="uil uil-cog"></i>
+        </div>
+
+        <div class="textfield">
+          <label for="usuario"> Modelo da CPU:</label>
+            <input
+              id="cpu_maquina"
+              type="text"
+              placeholder="Insira o modelo:"
+            />
+            <i class="uil uil-store-alt"></i>
+        </div>
+
+        <div class="textfield">
+          <label for="usuario"> Modelo da RAM:</label>
+            <input
+              id="ram_maquina"
+              type="text"
+              placeholder="Insira o modelo:"
+            />
+            <i class="uil uil-store-alt"></i>
+        </div>
+
+        <div class="textfield">
+          <label for="usuario"> Modelo do Disco:</label>
+            <input
+              id="disco_maquina"
+              type="text"
+              placeholder="Insira o modelo:"
+            />
+            <i class="uil uil-store-alt"></i>
+        </div>
+
+        <div class="textfield">
+          <label for="usuario"> Sistema Operacional:</label>
+            <input
+              id="so_maquina"
+              type="text"
+              placeholder="Insira o modelo:"
+            />
+            <i class="uil uil-store-alt"></i>
+        </div>
+
+        <button class="btnlogin" onclick="cadastrarMachine()"> Adicionar </button>
+      </div>
+      `;
+
+    }
+
+  }
+
+  function cadastrarMachine(){
+
+    var fkEmpresa = sessionStorage.getItem("FK_EMPRESA");
+    var codigoPatrimonio = patrimonio_maquina.value
+    var cpu = cpu_maquina.value
+    var ram = ram_maquina.value
+    var disco = disco_maquina.value
+    var sistema = so_maquina.value
+
+
+    fetch("/usuarios/cadastrarMachine", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          // crie um atributo que recebe o valor recuperado aqui
+          // Agora vá para o arquivo routes/usuario.js
+          fkEmpresaServer: fkEmpresa,
+          codigoPatrimonioServer: codigoPatrimonio,
+          cpuServer: cpu,
+          ramServer: ram,
+          discoServer: disco,
+          soServer: sistema,
+        }),
+      })
+        .then(function (resposta) {
+          if (resposta.ok) {
+            Swal.fire({
+              title: "Parabéns!",
+              text: "Máquina cadastrada!!",
+              icon: "success",
+              showConfirmButton: false,
+              confirmButtonText: "Confirmar",
+              timer: 3000,
+              color: "white",
+              background: "#1e1f25",
+              confirmButtonColor: "#272990",
+            });
+
+            setInterval(() => {
+              window.location = "crudMaquina.html";
+            }, 3000);
+
+          }
+        })
+        .catch(function (resposta) {
+          Swal.fire({
+            title: "Erro!",
+            text: "Não conseguimos cadastrar...",
+            icon: "error",
+            showConfirmButton: true,
+            confirmButtonText: "Tentar Novamente",
+            color: "white",
+            background: "#1e1f25",
+            confirmButtonColor: "#272990",
+          });
+
+          console.log(`#ERRO: ${resposta}`);
+        });
+
+
+
+  }
+
+  function editMachine(id){
+
+    var idMachine = id;
+    var sistemaNew = So_maquina.value;
+    var statusNew = isActive_select.value;
+
+    console.log(idMachine, sistemaNew, statusNew)
+    
+
+    fetch("/usuarios/alterarMachine", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          // crie um atributo que recebe o valor recuperado aqui
+          // Agora vá para o arquivo routes/usuario.js
+          idMachineServer: idMachine,
+          sistemaNewServer: sistemaNew,
+          statusServer: statusNew,
+        }),
+      })
+        .then(function (resposta) {
+          if (resposta.ok) {
+            Swal.fire({
+              title: "Parabéns!",
+              text: "Máquina alterada!!",
+              icon: "success",
+              showConfirmButton: false,
+              confirmButtonText: "Confirmar",
+              timer: 3000,
+              color: "white",
+              background: "#1e1f25",
+              confirmButtonColor: "#272990",
+            });
+
+            setInterval(() => {
+              window.location = "crudMaquina.html";
+            }, 3000);
+
+          }
+        })
+        .catch(function (resposta) {
+          Swal.fire({
+            title: "Erro!",
+            text: "Não conseguimos alterar...",
+            icon: "error",
+            showConfirmButton: true,
+            confirmButtonText: "Tentar Novamente",
+            color: "white",
+            background: "#1e1f25",
+            confirmButtonColor: "#272990",
+          });
+
+          console.log(`#ERRO: ${resposta}`);
+        });
+
+
+  }
+
+  function CloseModal() {
+    document.getElementById("modal").style.display = "none";
+  }
+
+  // function listUser(){
+
+  //   fetch("/usuarios/listar",{
+  //     method: "GET",
+  //     headers: {
+  //         "Content-Type": "application/json",
+  //       },
+
+  //   }).then(function (resposta) {
+
+  //      resposta.json()
+  //      .then((json) => {
+
+  //       console.log("ACERTO JSON ", json)
+  //       console.log("ACERTO JSON STRING ",JSON.stringify(json))
+
+  //       for(i = 0; i < json.length; i++){
+
+  //         user_maquina.innerHTML += `<option value="${json[i].nome_usuario_maquina}"> ${json[i].nome_usuario_maquina} </option>`
+
+  //            }
+
+  //      })
+
+  //   }).catch(function (erro) {
+
+  //      console.log("O erro -> " + erro);
+
+  //   })
+
+  // }
+
+  function AllMachines() {
+    fetch("usuarios/listarMaquinas", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(function (resposta) {
+        console.log("Front ok");
+
+        resposta.json().then((json) => {
+          console.log(json);
+
+          for (i = 0; i < json.length; i++) {
+
+            if(json[i].nome_usuario_maquina == null){
+
+              var user = "Máquina Sem Usuário"
+
+            } else {
+
+              user = json[i].nome_usuario_maquina
+
+            }
+
+            div = `<tr id="users-data" class="machines-data"> 
+                    <td class="td-content"> ${json[i].codigo_patrimonio} </td> 
+                    <td class="td-content"> ${user} </td>
+                    <td class="td-content"> ${json[i].sistema_operacional} </td> 
+                    <td class="td-content"> ${json[i].nome_empresa} </td> 
+                    <td class="td-content"> 
+                      <span style="cursor:pointer;" onclick="ModalMachine('edit', ${json[i].id_maquina})"> 
+                        <img src="assets/svg/edit.svg"> 
+                      </span> 
+                    </td>
+                    <td class="td-content">  
+                      <span style="cursor:pointer;" onclick="deleteMaquina(${json[i].id_maquina})"> 
+                        <img src="assets/svg/delete.svg">
+                      </span> 
+                    </td>
+                  </tr>`;
+
+            tabelaMaquina.innerHTML += div;
+
+          }
+        });
+      })
+      .catch(function (resposta) {
+        console.log("Front zuo");
+
+        console.log(resposta);
+      });
+  }
+
+
+
+
+  function deleteMaquina(maquina) {
+
+    var idMaquina = maquina
+
+    console.log(idMaquina)
+
+    Swal.fire({
+      position: 'top-end',
+      title: `Tem certeza que deseja excluir está máquina?`,
+      text: "",
+      icon: 'warning',
+      showCancelButton: true,
+      color: "white",
+      background: "#1e1f25",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sim, confirmar!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+                  fetch(`usuarios/DeletarMaquina/${idMaquina}`, {
+                  method: "DELETE",
+                  headers: {
+                    "Conten-Type": "application/json",
+                  }
+                })
+                  .then(function (resposta) {
+
+                    Swal.fire({
+                      title: "OK!",
+                      text: "Máquina excluida com sucesso!!",
+                      icon: "success",
+                      showConfirmButton: false,
+                      confirmButtonText: "Confirmar",
+                      timer: 3000,
+                      color: "white",
+                      background: "#1e1f25",
+                      confirmButtonColor: "#272990",
+                    })
+
+                    setInterval(() => {
+                      window.location = "crudMaquina.html";
+                    }, 3000);
+
+                  }).catch(function (resposta) {
+
+                    console.log("Deu erro no front")
+
+                    Swal.fire({
+                      title: "Erro!",
+                      text: "Tente novamente...",
+                      icon: "error",
+                      showConfirmButton: true,
+                      confirmButtonText: "Tentar Novamente",
+                      color: "white",
+                      background: "#1e1f25",
+                      confirmButtonColor: "#272990",
+                    });
+
+                  })
+
+      }
+    })
+
+
+
+  }
+
+  function editMaquina(idMaquina){
+
+   var id_maquina = idMaquina
+
+
+   fetch(`usuarios/DeletarMaquina/${idMaquina}`, {
+                  method: "DELETE",
+                  headers: {
+                    "Conten-Type": "application/json",
+                  }
+                })
+                  .then(function (resposta) {
+
+                    Swal.fire({
+                      title: "OK!",
+                      text: "Máquina excluida com sucesso!!",
+                      icon: "success",
+                      showConfirmButton: false,
+                      confirmButtonText: "Confirmar",
+                      timer: 3000,
+                      color: "white",
+                      background: "#1e1f25",
+                      confirmButtonColor: "#272990",
+                    })
+
+                    setInterval(() => {
+                      window.location = "crudMaquina.html";
+                    }, 3000);
+
+                  }).catch(function (resposta) {
+
+                    console.log("Deu erro no front")
+
+                    Swal.fire({
+                      title: "Erro!",
+                      text: "Tente novamente...",
+                      icon: "error",
+                      showConfirmButton: true,
+                      confirmButtonText: "Tentar Novamente",
+                      color: "white",
+                      background: "#1e1f25",
+                      confirmButtonColor: "#272990",
+                    });
+
+                  })
+
+
+
+
+  }
+
+</script>

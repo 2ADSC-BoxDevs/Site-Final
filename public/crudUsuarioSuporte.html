@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>usuário - Suporte</title>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css" />
+    <!-- Link fonte -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <!-- Link CSS -->
+    <link rel="stylesheet" href="css/cadastrarUsuarioSuporte.css" />
+    <!-- Link icones -->
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
+    />
+    <link
+      rel="shortcut icon"
+      href="assets/logo/logo-footer.png"
+      type="image/x-icon"
+    />
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://unpkg.com/jwt-decode/build/jwt-decode.js"></script>
+  </head>
+
+  <body onload="AllUsersSuporte()">
+    <div class="main-header">
+      <div class="header">
+        <div class="header-title">
+          <a class="link_home" href="dashV3.html"><p>&#x276E;</p></a>
+          <img
+            class="uil-user-circle"
+            src="assets/imgs/icon-empresa.svg"
+            alt=""
+          />
+          <h1>USUÁRIOS SUPORTE</h1>
+        </div>
+        <div>
+          <button class="btn-add-user" onclick="AddUserSup()">
+            <a href="cadastroUsuarioSuporte.html">+ add Users</a>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mainlogin">
+      <div class="div-list-users">
+        <table id="tabelaUsuariosSuporte" class="table-users">
+          <tr>
+            <td class="td-title">ID:</td>
+            <td class="td-title">Nome:</td>
+            <td class="td-title">Email:</td>
+            <td class="td-title">Senha:</td>
+            <td class="td-title">Empresa:</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
+
+<script>
+  function AllUsersSuporte() {
+    fetch("usuarios/listarSuporte", {
+      method: "GET",
+      headersa: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(function (resposta) {
+        console.log("Front ok");
+
+        resposta.json().then((json) => {
+          console.log(json);
+
+          for (i = 0; i < json.length; i++) {
+            div = `<tr id="users-data" class="users-data"> 
+                    <td class="td-content"> ${json[i].id_usuario_suporte} </td> 
+                    <td class="td-content"> ${json[i].nome_usuario_suporte} </td> 
+                    <td class="td-content"> ${json[i].email_usuario_suporte} </td> 
+                    <td class="td-content"> 
+                      <input class="identificacao" readonly type="password" value='${json[i].senha_usuario_suporte}' >
+                    </td>
+                    <td class="td-content"> ${json[i].nome_empresa} </td> 
+                    <td class="td-content"> 
+                      <span style="cursor:pointer;">
+                        <img src="assets/svg/edit.svg"> 
+                      </span> 
+                    </td>
+                    <td class="td-content"> 
+                      <span style="cursor:pointer;" onclick="deleteSuporte(${json[i].id_usuario_suporte})">
+                        <img src="assets/svg/delete.svg">   
+                      </span> 
+                    </td>
+                  </tr>`;
+
+            tabelaUsuariosSuporte.innerHTML += div;
+          }
+        });
+      })
+      .catch(function (resposta) {
+        console.log("Front zuo");
+
+        console.log(resposta);
+      });
+  }
+
+
+  function deleteSuporte(idSuporte){
+    
+    fetch(`usuarios/deleteSuporte/${idSuporte}`, {
+      method: "DELETE",
+      headersa: {
+        "Content-Type": "application/json",
+      },
+    }).then(function (resposta){
+
+         if(resposta.ok){
+
+          Swal.fire({
+                      title: "OK!",
+                      text: "Usuário excluido com sucesso!!",
+                      icon: "success",
+                      showConfirmButton: false,
+                      confirmButtonText: "Confirmar",
+                      timer: 3000,
+                      color: "white",
+                      background: "#1e1f25",
+                      confirmButtonColor: "#272990",
+                    });
+
+
+              setInterval(() => {
+              window.location = "crudUsuarioSuporte.html";
+            }, 3000);
+
+
+         }
+
+    }).catch(function (resposta){
+
+       
+      Swal.fire({
+            title: "Erro!",
+            text: "Não foi possivel excluir...",
+            icon: "error",
+            showConfirmButton: true,
+            confirmButtonText: "Tentar Novamente",
+            color: "white",
+            background: "#1e1f25",
+            confirmButtonColor: "#272990",
+          });
+
+
+    })
+
+  }
+
+
+</script>
