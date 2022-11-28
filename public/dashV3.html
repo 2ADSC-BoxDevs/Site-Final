@@ -131,15 +131,15 @@
         </div>
 
 
-        <div class="card">
+        <!-- <div class="card">
           <div class="card-inner">
-            <p class="text-primary">Totais de alertas de memórias</p>
+            <p class="text-primary">Totais de alertas de Disco</p>
             <span class="material-symbols-outlined storage">
               storage
             </span>
           </div>
           <span class="text-primary font-weight-bold" id="alertDiscoHtml">0</span>
-        </div>
+        </div> -->
 
       </div>
 
@@ -445,7 +445,7 @@
 
       var cpu = registro.processador_emUso;
       var ram = registro.memoriaRam_emUso;
-      var disco = registro.discoEmUso;
+      //var disco = registro.discoEmUso;
 
       if (cpu > 0) {
         AlertasCPU++;
@@ -456,16 +456,16 @@
         AlertasRam++;
       }
 
-      if (disco > 0) {
-        AlertasDisco++;
-      }
+      // if (disco > 0) {
+      //   AlertasDisco++;
+      // }
     }
 
     alertRamHtml.innerHTML = AlertasRam;
 
     alertCpuHtml.innerHTML = AlertasCPU;
 
-    alertDiscoHtml.innerHTML = AlertasDisco;
+    //alertDiscoHtml.innerHTML = AlertasDisco;
 
 
     // dados.datasets[0].data.shift();
@@ -563,9 +563,6 @@
 
     var idEmpresa = sessionStorage.getItem('FK_EMPRESA');
 
-    var nome = sessionStorage.getItem('NOME');
-
-    user.innerHTML = `Seja Bem-vindo! ${nome}`;
 
 
     fetch(`medidas/verify/${idEmpresa}`, {
@@ -578,7 +575,7 @@
       resposta.json()
         .then((json) => {
 
-          console.log("LOLOLOLOLOLOLOLOLOLOLOLOLOLOLOLo")
+  
           console.log(json.length)
 
           var maquinas = 0;
@@ -786,6 +783,7 @@
         }
       ],
     };
+    
 
     for (i = 0; i < resposta.length; i++) {
       var registro = resposta[i];
