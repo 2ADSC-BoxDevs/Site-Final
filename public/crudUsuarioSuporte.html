@@ -96,12 +96,12 @@
                     </td>
                     <td class="td-content"> ${json[i].nome_empresa} </td> 
                     <td class="td-content"> 
-                      <span style="cursor:pointer;" onclick="updateSuporte(${json[i].id_usuario_suporte})">
+                      <span title="Editar Senha do User" style="cursor:pointer;" onclick="updateSuporte(${json[i].id_usuario_suporte})">
                         <img src="assets/svg/edit.svg"> 
                       </span> 
                     </td>
                     <td class="td-content"> 
-                      <span style="cursor:pointer;" onclick="deleteSuporte(${json[i].id_usuario_suporte})">
+                      <span title="Deletar User" style="cursor:pointer;" onclick="deleteSuporte(${json[i].id_usuario_suporte})">
                         <img src="assets/svg/delete.svg">   
                       </span> 
                     </td>
@@ -123,7 +123,7 @@
     
     fetch(`usuarios/deleteSuporte/${idSuporte}`, {
       method: "DELETE",
-      headersa: {
+      headers: {
         "Content-Type": "application/json",
       },
     }).then(function (resposta){
@@ -174,16 +174,15 @@
   function updateSuporte(idSuporte){
 
     var senha = senha_inp.value
-
-    console.log("AAAAAAAAAAAAAAAAAAAAA")
     
-    fetch(`usuarios/updateSuporte/${idSuporte}`, {
+    fetch("usuarios/updateSuporte", {
       method: "PUT",
-      headersa: {
+      headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
           senhaServer: senha,
+          idSuporteServer: idSuporte
         }),
     }).then(function (resposta){
 

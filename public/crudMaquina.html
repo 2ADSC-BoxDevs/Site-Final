@@ -376,12 +376,12 @@
                     <td class="td-content"> ${json[i].sistema_operacional} </td> 
                     <td class="td-content"> ${json[i].nome_empresa} </td> 
                     <td class="td-content"> 
-                      <span style="cursor:pointer;" onclick="ModalMachine('edit', ${json[i].id_maquina})"> 
+                      <span style="cursor:pointer;" title="Editar Máquina" onclick="ModalMachine('edit', ${json[i].id_maquina})"> 
                         <img src="assets/svg/edit.svg"> 
                       </span> 
                     </td>
                     <td class="td-content">  
-                      <span style="cursor:pointer;" onclick="deleteMaquina(${json[i].id_maquina})"> 
+                      <span style="cursor:pointer;" title="Deletar Máquina" onclick="deleteMaquina(${json[i].id_maquina})"> 
                         <img src="assets/svg/delete.svg">
                       </span> 
                     </td>

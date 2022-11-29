@@ -78,7 +78,7 @@ router.post("/cadastrar", function (req, res) {
 })
 
 
-router.put("updateSuporte/:idSuporte", function (req, res) {
+router.put("/updateSuporte", function (req, res) {
     usuarioController.updateSuporte(req, res);
 })
 

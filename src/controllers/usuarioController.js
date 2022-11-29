@@ -442,10 +442,11 @@ function alterarStatus(req, res) {
 
 
 function updateSuporte(req, res) {
-
-
     var senha = req.body.senhaServer
-    var idSuporte = req.params.idSuporte;
+    var idSuporte = req.body.idSuporteServer;
+
+    console.log("AAAAAAAAAAAAAAAAAAAA")
+    console.log(senha, idSuporte)
 
     usuarioModel.updateSuporte(idSuporte, senha)
         .then(

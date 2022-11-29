@@ -357,8 +357,8 @@ form span {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 84vh;
-  width: 64vw;
+  height: 64vh;
+  width: 40vw;
   position: fixed;
   z-index: 10000;
   top: 20%;

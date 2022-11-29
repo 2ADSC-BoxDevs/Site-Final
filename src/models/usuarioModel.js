@@ -192,10 +192,10 @@ function alterarStatus(isActive, id_maquina) {
 }
 
 
-function updateSuporte(id_maquina, senha) {
+function updateSuporte(idSuporte, senha) {
     console.log("ACESSEI O AVISO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function editar(): ");
     var instrucao = `
-        UPDATE usuario_suporte SET senha_usuario_suporte = ${senha} WHERE id_maquina = '${id_maquina}';
+        UPDATE usuario_suporte SET senha_usuario_suporte = '${senha}' WHERE id_usuario_suporte = ${idSuporte};
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
