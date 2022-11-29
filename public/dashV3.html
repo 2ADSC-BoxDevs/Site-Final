@@ -445,12 +445,12 @@
       var ram = registro.memoriaRam_emUso;
       // disco = registro.discoEmUso;
 
-      if (cpu > 0) {
+      if (cpu > 15) {
         AlertasCPU++;
       }
 
       //memoria RAM vindo em %
-      if (ram > 0) {
+      if (ram > 60) {
         AlertasRam++;
       }
 
@@ -502,7 +502,7 @@
     obterDadosGrafico();
 
 
-  }, 10000);
+  }, 2000);
 
 
 

@@ -1162,7 +1162,7 @@ DOWNLOAD */
   display: none;
   align-self: center;
   flex-direction: column;
-  height: 65vh;
+  height: 68vh;
   width: 70vw;
   position: fixed;
   z-index: 10000;
