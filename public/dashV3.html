@@ -36,7 +36,7 @@
     <header class="header">
 
       <div class="user">
-        <span id="user">Olá, usuário!</span>
+        <span id="user">Bem Vindo!</span>
       </div>
 
       <!-- <div class="search-box">
@@ -424,13 +424,14 @@
   };
 
 
+  var disco;
+  var ram;
 
   function plotarGrafico(resposta, idEmpresa) {
     console.log("iniciando plotagem do gráfico...");
 
     var AlertasRam = 0;
     var AlertasCPU = 0;
-    var AlertasDisco = 0;
 
     var ativas = 0;
 
@@ -444,8 +445,8 @@
       console.log(registro)
 
       var cpu = registro.processador_emUso;
-      var ram = registro.memoriaRam_emUso;
-      //var disco = registro.discoEmUso;
+      ram = registro.memoriaRam_emUso;
+      disco = registro.discoEmUso;
 
       if (cpu > 0) {
         AlertasCPU++;
@@ -657,15 +658,15 @@
                               <canvas id="myChartcpu"></canvas>
                       </div>
                       <div class="porc-volume">
-                      <p class="title-porc">Volume em uso</p>
+                      <p class="title-porc">Disco em uso</p>
                       <div class="porc-number">
-                      <p id="porc-volume-number">55%</p>
+                      <p id="porc_volume_number">${disco}%</p>
                       </div>
                       </div>
                       <div class="porc-maquina">
                         <p class="title-porc">Memoria RAM em uso</p>
                       <div class="porc-number">
-                        <p id="porc-ram-number">25%</p>
+                        <p id="porc_ram_number">${ram}%</p>
                         </div>
                         </div>
                       </div>
@@ -776,8 +777,8 @@
       datasets: [
         {
           label: "Processador em uso",
-          borderColor: "#E0AA1E",
-          backgroundColor: "#E0AA1E",
+          borderColor: "palevioletred",
+          backgroundColor: "palevioletred",
           fill: true,
           data: [],
         }
