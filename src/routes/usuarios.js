@@ -40,13 +40,15 @@ router.post("/autenticarGoogle", function (req, res) {
 
 router.get("/listar", function (req, res) {
     usuarioController.listar(req, res);
-
-
 });
 
 // Pendente
 router.post("/cadastrarUser", function (req, res) {
     usuarioController.cadastrarUser(req, res);
+})
+
+router.put("/editUser", function (req, res) {
+    usuarioController.editUser(req, res);
 })
 
 

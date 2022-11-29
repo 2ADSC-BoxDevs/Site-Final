@@ -460,7 +460,7 @@
       }
 
       //memoria RAM vindo em %
-      if (ram > 60) {
+      if (ram > 70) {
         AlertasRam++;
       }
 
@@ -653,7 +653,7 @@
     document.getElementById("modal").style.display = "flex";
     document.getElementById("modal").innerHTML = `
                       <div id="nav-modal" class="navbar-modal">
-                          <div id="title-patrimonio">BD0002323</div>
+                          <div id="title_patrimonio"></div>
                           <div>
                         <button onclick="CloseModal()" class="btn-close-modal">
                             <img src="assets/svg/cancel.svg">
@@ -795,12 +795,15 @@
     var disco;
     var ram;
 
+    const hora = new Date().toLocaleTimeString();
+
     for (i = 0; i < resposta.length; i++) {
       var registro = resposta[i];
-      dados.labels.push(registro.data_hora_registro)
+      dados.labels.push(hora)
       dados.datasets[0].data.push(Number(registro.processador_emUso).toFixed(0));
       porc_volume_number.innerHTML = registro.discoEmUso + '%';
       porc_ram_number.innerHTML = registro.memoriaRam_emUso + '%';
+      title_patrimonio.innerHTML = registro.codigo_patrimonio;
     }
 
     const config = {
@@ -826,9 +829,11 @@
             console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
             console.log(`Dados atuais do gráfico: ${dados}`);
 
+            const hora = new Date().toLocaleTimeString();
+
             // tirando e colocando valores no gráfico
             dados.labels.shift(); // apagar o primeiro
-            dados.labels.push(novoRegistro[0].data_hora_registro); // incluir um novo momento
+            dados.labels.push(hora); // incluir um novo momento
 
             dados.datasets[0].data.shift(); // apagar o primeiro de temperatura
             dados.datasets[0].data.push(Number(novoRegistro[0].processador_emUso).toFixed(0)); // incluir uma nova medida de temperatura

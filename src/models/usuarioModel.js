@@ -9,7 +9,7 @@ function listar(req, res) {
     JOIN setor
     ON usuario_maquina.fk_setor=setor.id_setor
     JOIN empresa
-    ON usuario_maquina.fk_empresa_usuario=empresa.id_empresa;
+    ON usuario_maquina.fk_empresa=empresa.id_empresa;
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
@@ -76,15 +76,15 @@ function cadastrar(fk_empresa, fk_gestor, cargo, nome, email, senha, sub) {
     return database.executar(instrucao);
 }
 
-function cadastrarUser(fk_gestor, fk_empresa, cargo, nome, email, senha, sub) {
+function cadastrarUser(setor, nome, cargo, senha, fk_empresa) {
 
-    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nome, email, senha);
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nome, senha);
     
     // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
     //  e na ordem de inserção dos dados.
 
     var instrucao = `
-    INSERT INTO usuario_maquina values (null, #SETOR, #EMPRESA, '#NOME', '#CARGO', '#IDENTIFICAÇÃO');
+    INSERT INTO usuario_maquina values (${setor}, '${nome}', '${cargo}', ${senha}, 1);
     `;
     console.log("Executando a instrução SQL: " + instrucao);
     
@@ -201,6 +201,15 @@ function updateSuporte(idSuporte, senha) {
     return database.executar(instrucao);
 }
 
+function editUser(idMachine, senha) {
+    console.log("ACESSEI O AVISO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function editar(): ");
+    var instrucao = `
+        UPDATE usuario_maquina SET identificacao_usuario = '${senha}' WHERE id_usuario_maquina = ${idMachine};
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
 module.exports = {
     listar,
     entrar,
@@ -217,5 +226,6 @@ module.exports = {
     alterarMachine,
     deleteSuporte,
     alterarStatus,
-    updateSuporte
+    updateSuporte,
+    editUser
 };

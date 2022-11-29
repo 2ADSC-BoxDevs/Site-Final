@@ -112,7 +112,7 @@
             <div class="textfield">
               <label for="maquina">Nome do usuário</label>
               <input
-                id="input_cadastro_nomeempresa"
+                id="input_cadastro_nome"
                 type="text"
                 onkeyup="validacao_nome_register()"
                 placeholder="Insira o nome do usuário"
@@ -181,17 +181,17 @@
   var emailReg = /^([À-úA-z0-9._-]+@[a-z0-9._-]+\.[A-z0-9_-]+)$/;
 
   function validacao_nome_register() {
-    var nome = input_cadastro_nomeempresa.value;
+    var nome = input_cadastro_nome.value;
     // Verifica Nome
     if (nome.match(nomeReg)) {
       msg_name_validation_register.innerHTML = "";
-      input_cadastro_nomeempresa.style.border = "1px solid green ";
-      input_cadastro_nomeempresa.style.color = " green";
+      input_cadastro_nome.style.border = "1px solid green ";
+      input_cadastro_nome.style.color = " green";
     } else {
       msg_name_validation_register.innerHTML =
         '<b style="color: red;"> Verifique o campo preenchido </b>';
-      input_cadastro_nomeempresa.style.color = "red";
-      input_cadastro_nomeempresa.style.border = "1px solid red";
+      input_cadastro_nome.style.color = "red";
+      input_cadastro_nome.style.border = "1px solid red";
     }
   }
 
@@ -259,10 +259,10 @@
             <td class="td-content"> ${json[i].nome_empresa} </td> 
             <td class="td-content"> ${json[i].nome_setor} </td> 
             <td class="td-content"> 
-              <input class="identificacao" readonly type="password"value='${json[i].identificacao_usuario}'>
+              <input id="senha_input"class="identificacao" type="text" value='${json[i].identificacao_usuario}'>
             </td>
             <td class="td-content"> 
-              <span style="cursor:pointer;">
+              <span style="cursor:pointer;" onclick="editUser(${json[i].id_usuario_maquina})">
                 <img src="assets/svg/edit.svg"> 
               </span>
             </td>
@@ -291,17 +291,15 @@
 
   function cadastrar() {
 
-    var nomeUser = input_cadastro_nomeempresa.value;
+    var nomeUser = input_cadastro_nome.value;
     var cargoUser = input_cadastro_cargoempresa.value;
-    var emailUser = email_usuario.value;
     var senhaUser = Number(ipt_senha.value);
-    var fk_gestor = sessionStorage.getItem("ID_USER"); // ID_USER vira FK_GESTOR
+    var fkEmpresa = sessionStorage.getItem("FK_EMPRESA")
+
 
     // Enviando o valor da nova input
 
-    if(fk_gestor != null || fk_gestor != ""){
-
-    fetch("/usuarios/cadastrar", {
+    fetch("/usuarios/cadastrarUser", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -311,9 +309,8 @@
         // Agora vá para o arquivo routes/usuario.js
         nomeServer: nomeUser,
         cargoServer: cargoUser,
-        emailServer: emailUser,
         senhaServer: senhaUser,
-        fk_gestorServer: fk_gestor
+        empresaServer: fkEmpresa
       }),
     }).then(function (resposta) {
 
@@ -336,7 +333,7 @@
 
               setInterval(() => {
 
-                window.location = 'login.html';
+                window.location = 'crudUsuario.html';
 
               }, 3000);
 
@@ -347,7 +344,7 @@
 
         Swal.fire({
             title: 'Erro!',
-            text: 'Não conseguimos efetuar o seu login...',
+            text: 'Não conseguimos efetuar cadastro...',
             icon: 'error',
             showConfirmButton: true,
             confirmButtonText: 'Tentar Novamente',
@@ -360,29 +357,32 @@
         console.log(`#ERRO: ${resposta}`);
       });
 
-    } else {
+    }
 
-      fetch("/usuarios/cadastrar", {
-      method: "POST",
+
+
+    function editUser(idMachine){
+
+      var senha = senha_input.value
+
+
+      fetch("/usuarios/editUser", {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        // crie um atributo que recebe o valor recuperado aqui
-        // Agora vá para o arquivo routes/usuario.js
-        nomeServer: nomeUser,
-        cargoServer: cargoUser,
-        emailServer: emailUser,
-        senhaServer: senhaUser,
-        fk_gestorServer: null
+      
+        idServer: idMachine,
+        senhaServer: senha,
       }),
     }).then(function (resposta) {
 
-        if (resposta.ok) {
+        if(resposta.ok){
 
           Swal.fire({
             title: 'Parabéns!',
-            text: 'Cadastro realizado com sucesso!!',
+            text: 'Usuário editado com sucesso!!',
             icon: 'success',
             showConfirmButton: false,
             confirmButtonText: 'Confirmar',
@@ -397,17 +397,18 @@
 
               setInterval(() => {
 
-                window.location = 'login.html';
+                window.location = 'crudUsuario.html';
 
               }, 3000);
 
-        }
+            }
+
       })
       .catch(function (resposta) {
 
         Swal.fire({
             title: 'Erro!',
-            text: 'Tente novamente...',
+            text: 'Não conseguimos fazer a edição...',
             icon: 'error',
             showConfirmButton: true,
             confirmButtonText: 'Tentar Novamente',
@@ -418,9 +419,14 @@
           })
 
         console.log(`#ERRO: ${resposta}`);
-
       });
 
+
+
+
     }
-  }
+
+
+
+
 </script>

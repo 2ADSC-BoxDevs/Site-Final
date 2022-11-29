@@ -233,15 +233,14 @@ function cadastrar(req, res) {
 function cadastrarUser(req, res) {
 
     // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
-    var cargo = req.body.cargoServer;
+    var fk_empresa = req.body.EmpresaServer;
     var nome = req.body.nomeServer;
-    var email = req.body.emailServer;
     var senha = req.body.senhaServer;
-    var fk_gestor = req.body.fk_gestorServer;
-    var sub = req.body.subServer
+    var setor = 1
+    var cargo = req.body.cargoServer;
 
         // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
-        usuarioModel.cadastrarUser(fk_gestor, cargo, nome, email, senha, sub)
+        usuarioModel.cadastrarUser(setor, nome, cargo, senha, fk_empresa)
             .then(function (resultado) {
 
                     res.json(resultado);
@@ -417,6 +416,38 @@ function alterarMachine(req, res) {
             }
         );
 }
+
+
+function editUser(req, res) {
+
+    var idMachine = req.body.idServer;
+    var senha = req.body.senhaServer;
+
+    usuarioModel.editUser(idMachine, senha)
+
+        .then(function (resultado) {
+
+            // if (resultado.length > 0) {
+
+                res.status(200).json(resultado);
+
+            // } else {
+
+            //     res.status(204).send("Nenhum resultado encontrado!")
+            // }
+        }).catch(function (erro) {
+
+                console.log(erro);
+
+                console.log("Houve um erro ao realizar a consulta! Erro: ", erro.sqlMessage);
+                
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
+
+
 function alterarStatus(req, res) {
     var isActive = req.body.isActiveServer;
     var id_maquina = req.params.id_maquina;
@@ -481,5 +512,6 @@ module.exports = {
     alterarMachine,
     deleteSuporte,
     alterarStatus,
-    updateSuporte
+    updateSuporte,
+    editUser
 }
