@@ -424,9 +424,6 @@
   };
 
 
-  var disco;
-  var ram;
-
   function plotarGrafico(resposta, idEmpresa) {
     console.log("iniciando plotagem do gráfico...");
 
@@ -445,8 +442,8 @@
       console.log(registro)
 
       var cpu = registro.processador_emUso;
-      ram = registro.memoriaRam_emUso;
-      disco = registro.discoEmUso;
+      var ram = registro.memoriaRam_emUso;
+      // disco = registro.discoEmUso;
 
       if (cpu > 0) {
         AlertasCPU++;
@@ -660,13 +657,13 @@
                       <div class="porc-volume">
                       <p class="title-porc">Disco em uso</p>
                       <div class="porc-number">
-                      <p id="porc_volume_number">${disco}%</p>
+                      <p id="porc_volume_number"> 0%</p>
                       </div>
                       </div>
                       <div class="porc-maquina">
                         <p class="title-porc">Memoria RAM em uso</p>
                       <div class="porc-number">
-                        <p id="porc_ram_number">${ram}%</p>
+                        <p id="porc_ram_number">0%</p>
                         </div>
                         </div>
                       </div>
@@ -785,11 +782,15 @@
       ],
     };
     
+    var disco;
+    var ram;
 
     for (i = 0; i < resposta.length; i++) {
       var registro = resposta[i];
       dados.labels.push(registro.data_hora_registro)
       dados.datasets[0].data.push(Number(registro.processador_emUso).toFixed(0));
+      porc_volume_number.innerHTML = registro.discoEmUso + '%';
+      porc_ram_number.innerHTML = registro.memoriaRam_emUso + '%';
     }
 
     const config = {
@@ -821,7 +822,12 @@
 
             dados.datasets[0].data.shift(); // apagar o primeiro de temperatura
             dados.datasets[0].data.push(Number(novoRegistro[0].processador_emUso).toFixed(0)); // incluir uma nova medida de temperatura
+            
+            porc_volume_number.innerHTML = ""
+            porc_ram_number.innerHTML = ""
 
+            porc_volume_number.innerHTML = novoRegistro[0].discoEmUso + '%';
+            porc_ram_number.innerHTML = novoRegistro[0].memoriaRam_emUso + '%';
             myChart.update();
 
             // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
