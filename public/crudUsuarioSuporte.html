@@ -92,11 +92,11 @@
                     <td class="td-content"> ${json[i].nome_usuario_suporte} </td> 
                     <td class="td-content"> ${json[i].email_usuario_suporte} </td> 
                     <td class="td-content"> 
-                      <input class="identificacao" readonly type="password" value='${json[i].senha_usuario_suporte}' >
+                      <input id="senha_inp" class="identificacao" type="text" value='${json[i].senha_usuario_suporte}' >
                     </td>
                     <td class="td-content"> ${json[i].nome_empresa} </td> 
                     <td class="td-content"> 
-                      <span style="cursor:pointer;">
+                      <span style="cursor:pointer;" onclick="updateSuporte(${json[i].id_usuario_suporte})">
                         <img src="assets/svg/edit.svg"> 
                       </span> 
                     </td>
@@ -169,5 +169,63 @@
 
   }
 
+
+
+  function updateSuporte(idSuporte){
+
+    var senha = senha_inp.value
+
+    console.log("AAAAAAAAAAAAAAAAAAAAA")
+    
+    fetch(`usuarios/updateSuporte/${idSuporte}`, {
+      method: "PUT",
+      headersa: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+          senhaServer: senha,
+        }),
+    }).then(function (resposta){
+
+         if(resposta.ok){
+
+          Swal.fire({
+                      title: "OK!",
+                      text: "Usuário editado com sucesso!!",
+                      icon: "success",
+                      showConfirmButton: false,
+                      confirmButtonText: "Confirmar",
+                      timer: 3000,
+                      color: "white",
+                      background: "#1e1f25",
+                      confirmButtonColor: "#272990",
+                    });
+
+
+              setInterval(() => {
+              window.location = "crudUsuarioSuporte.html";
+            }, 3000);
+
+
+         }
+
+    }).catch(function (resposta){
+
+       
+      Swal.fire({
+            title: "Erro!",
+            text: "Não foi possivel editar...",
+            icon: "error",
+            showConfirmButton: true,
+            confirmButtonText: "Tentar Novamente",
+            color: "white",
+            background: "#1e1f25",
+            confirmButtonColor: "#272990",
+          });
+
+
+    })
+
+  }
 
 </script>

@@ -439,6 +439,31 @@ function alterarStatus(req, res) {
         );
 
 }
+
+
+function updateSuporte(req, res) {
+
+
+    var senha = req.body.senhaServer
+    var idSuporte = req.params.idSuporte;
+
+    usuarioModel.updateSuporte(idSuporte, senha)
+        .then(
+            function (resultado) {
+                res.json(resultado);
+            }
+        )
+        .catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao realizar o post: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+
+}
+
+
 module.exports = {
     entrar,
     entrarGoogle,
@@ -454,5 +479,6 @@ module.exports = {
     cadastrarMachine,
     alterarMachine,
     deleteSuporte,
-    alterarStatus
+    alterarStatus,
+    updateSuporte
 }
