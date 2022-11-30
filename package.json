@@ -1,0 +1,23 @@
+{
+
+    "name": "site",
+  
+    "version": "0.0.1",
+  
+    "private": true,
+  
+    "scripts": {
+  
+      "start": "node ./site/app.js",
+  
+      "postinstall": "cd site && npm install"
+  
+    },
+  
+    "devDependencies": {
+  
+      "cross-env": "^7.0.3"
+  
+    }
+  
+  }
